@@ -23,9 +23,12 @@ class YoloDetector:
     def __init__(self, config):
         p=Path(config['weights']).expanduser().resolve()
         if not p.is_file():
-            raise ValueError('횡단보도 가중치 파일이 없습니다. models/README.md를 확인하세요')
+            raise ValueError('횡단보도 가중치 파일이 없습니다. docs/models.md의 다운로드 안내 또는 --weights 설정을 확인하세요')
         if not config.get('source') or not config.get('license'):
             raise ValueError('가중치 출처와 라이선스를 기록해야 합니다')
+        weights_sha256 = digest(p)
+        if config.get('expected_weights_sha256') and weights_sha256 != config['expected_weights_sha256']:
+            raise ValueError('선택 모델의 가중치 해시가 다릅니다. 올바른 공개 가중치를 준비하거나 사용자 가중치로 명시하세요')
         try:
             import ultralytics
         except ImportError:
@@ -41,7 +44,7 @@ class YoloDetector:
             raise ValueError(f'선택 클래스 {name!r}는 횡단보도 클래스가 아닙니다. 일반 COCO 가중치는 지원하지 않습니다')
         if self.model.task not in ('detect','obb'):
             raise ValueError('객체 탐지 또는 OBB 모델이 필요합니다')
-        self.metadata={'backend':'ultralytics','version':ultralytics.__version__,'weights_sha256':digest(p),
+        self.metadata={'backend':'ultralytics','version':ultralytics.__version__,'weights_sha256':weights_sha256,
                        'weights_name':p.name,'source':config['source'],'license':config['license'],
                        'task':self.model.task,'class_id':self.class_id,'class_name':name,'config':dict(config,weights=str(p)),
                        'score_semantics':'model score, not calibrated probability or field accuracy'}

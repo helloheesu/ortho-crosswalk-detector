@@ -8,6 +8,7 @@ from . import catalog, geo
 from .detection import prepare_job, plan_tiles, validate_config, execute
 from .exchange import read_bundle
 from .records import output_outside_inputs, write_json, uid, now
+from .settings import MODEL_FIELDS, resolve_model
 
 
 def read_json(path):
@@ -29,6 +30,30 @@ def load_job(path):
         config['weights'] = str(weights if weights.is_absolute() else path.parent / weights)
     config.setdefault('class_id', 0)
     return description, config
+
+
+def execution_config(config, args):
+    config = resolve_model(config, args.model)
+    if args.weights is not None:
+        if not args.weight_source or not args.weight_license:
+            raise ValueError('--weights 지정 시 --weight-source와 --weight-license를 함께 기록하세요')
+        # Replacing a file must not inherit a known preset's identity or checksum.
+        backend = config.get('backend', 'ultralytics')
+        class_id = config.get('class_id', 0)
+        for key in MODEL_FIELDS:
+            config.pop(key, None)
+        config.update(backend=backend, class_id=class_id,
+                      weights=str(Path(args.weights).expanduser().resolve()),
+                      source=args.weight_source, license=args.weight_license)
+        if args.weight_revision is not None:
+            config['revision'] = args.weight_revision
+    elif any(value is not None for value in (args.weight_source, args.weight_license, args.weight_revision)):
+        raise ValueError('--weight-source/license/revision은 --weights와 함께 사용하세요')
+    if args.confidence is not None:
+        config['confidence'] = args.confidence
+    if args.class_id is not None:
+        config['class_id'] = args.class_id
+    return validate_config(config)
 
 
 def selected_image(root, relative):
@@ -74,6 +99,15 @@ def parser():
         cmd = sub.add_parser(name, help=help_text)
         cmd.add_argument('--input-dir', default='./data/inputs')
         cmd.add_argument('--job', required=True)
+        cmd.add_argument('--model', choices=('nano', 'medium'),
+                         help='SightLinks 모델 변경 (생략: 작업 설정 또는 nano)')
+        cmd.add_argument('--confidence', type=float,
+                         help='후보 점수 하한 변경 (생략: 작업 설정 또는 0.01, 실제 확률 아님)')
+        cmd.add_argument('--weights', help='사용자 로컬 가중치 경로 (현재 작업 디렉터리 기준)')
+        cmd.add_argument('--weight-source', help='사용자 가중치의 출처')
+        cmd.add_argument('--weight-license', help='사용자 가중치의 라이선스')
+        cmd.add_argument('--weight-revision', help='사용자 가중치의 고정 버전 (Grounding DINO는 필수)')
+        cmd.add_argument('--class-id', type=int, help='사용할 횡단보도 클래스 ID')
         if name == 'detect':
             cmd.add_argument('--output-dir', required=True)
     validate = sub.add_parser('validate-bundle', help='다른 프로그램에서 후보·근거 해시 확인')
@@ -113,11 +147,11 @@ def main(argv=None):
                       'check_rmse_m': g['check_rmse_m'], 'absolute_accuracy_m': None}
         elif args.command in ('plan', 'detect'):
             description, config = load_job(args.job)
+            config = execution_config(config, args)
             area, images = prepare_job(args.input_dir, description)
-            config = validate_config(config)
             if args.command == 'plan':
                 planned = plan_tiles(area, images, config)
-                result = {'area': area, 'tile_count': len(planned),
+                result = {'area': area, 'config': config, 'tile_count': len(planned),
                           'tiles': [{'source_id': im['id'], 'source_path': im['relative_path'], 'bbox_pixels': b}
                                     for _, im, _, b in planned], 'inference_executed': False}
             else:
@@ -126,7 +160,8 @@ def main(argv=None):
                 result_run = execute(args.input_dir, area, images, config, args.output_dir)
                 result = {'run_id': result_run['id'], 'status': result_run['status'],
                           'bundle': str(Path(args.output_dir).expanduser().resolve() / 'candidates.json'),
-                          'origin': result_run['origin'], 'tile_count': result_run['tile_count']}
+                          'origin': result_run['origin'], 'tile_count': result_run['tile_count'],
+                          'config': result_run['config']}
         elif args.command == 'validate-bundle':
             data = read_bundle(args.path, allow_test=args.allow_test)
             result = {'schema_version': data['schema_version'], 'origin': data['origin'],

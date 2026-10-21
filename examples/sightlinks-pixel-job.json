@@ -7,12 +7,7 @@
     "geometry": {"type": "Polygon", "coordinates": [[[0, 0], [1600, 0], [1600, 1600], [0, 1600], [0, 0]]]}
   },
   "config": {
-    "backend": "ultralytics",
-    "weights": "../models/sightlinks/yolo-n.pt",
-    "source": "https://github.com/UCL-SightLinks/SightLinks-Main/blob/99634dbb4c3628353a4225df51a266c622891807/models/yolo-n.pt",
-    "revision": "99634dbb4c3628353a4225df51a266c622891807",
-    "license": "Upstream repository: MIT; checkpoint and Ultralytics runtime: AGPL-3.0",
-    "class_id": 0,
+    "model": "nano",
     "confidence": 0.01,
     "iou": 0.7,
     "tile_size": 768,

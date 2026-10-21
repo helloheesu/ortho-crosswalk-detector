@@ -18,6 +18,7 @@ from shapely.ops import unary_union
 from . import catalog, geo
 from .models import load_detector, configure_runtime
 from .records import digest, now, uid, write_json, output_outside_inputs
+from .settings import DEFAULT_CONFIDENCE, DEFAULT_TILE_SIZE, DEFAULT_OVERLAP, resolve_model
 
 JOB_VERSION = '1.0'
 
@@ -30,13 +31,14 @@ class DetectionFailed(RuntimeError):
 
 def validate_config(config):
     out = dict(config)
-    for key, default in [('tile_size', 1024), ('overlap', 256), ('margin', 128), ('max_tiles', 2000)]:
+    for key, default in [('tile_size', DEFAULT_TILE_SIZE), ('overlap', DEFAULT_OVERLAP), ('margin', 128), ('max_tiles', 2000)]:
         value = out.get(key, default)
         if isinstance(value, bool) or int(value) != float(value):
             raise ValueError(f'{key}는 정수여야 합니다')
         out[key] = int(value)
-    out['confidence'] = float(out.get('confidence', .15))
+    out['confidence'] = float(out.get('confidence', DEFAULT_CONFIDENCE))
     out['iou'] = float(out.get('iou', .7))
+    out.setdefault('device', 'cpu')
     size = out['tile_size']
     if not (128 <= size <= 2048 and size % 32 == 0 and 0 <= out['overlap'] < size
             and 0 <= out['margin'] <= 2048 and 0 < out['confidence'] < 1
@@ -180,6 +182,7 @@ def execute(input_dir, area, images, config, output_dir, detector=None, progress
                           != sorted(fingerprints[im['id']]['sidecars'], key=lambda x: x['relative_path'])):
                 raise ValueError('보정 기준의 원본 해시가 현재 입력과 다릅니다')
     if detector is None:
+        config = validate_config(resolve_model(config))
         configure_runtime(folder.parent / 'runtime')
         detector = load_detector(config)
     folder.mkdir(parents=True)

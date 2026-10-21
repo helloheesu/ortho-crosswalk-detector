@@ -12,14 +12,11 @@
     }
   },
   "config": {
-    "tile_size": 1024,
-    "overlap": 256,
+    "model": "nano",
+    "tile_size": 768,
+    "overlap": 128,
     "margin": 128,
-    "confidence": 0.15,
-    "class_id": 0,
-    "device": "cpu",
-    "weights": "../models/crosswalk.pt",
-    "source": "사용자가 확인한 가중치 출처",
-    "license": "사용자가 확인한 가중치 라이선스"
+    "confidence": 0.01,
+    "device": "cpu"
   }
 }

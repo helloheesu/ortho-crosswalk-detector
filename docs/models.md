@@ -50,7 +50,7 @@ if not license_path.exists():
 PY
 ```
 
-[SightLinks 작업 정의 예시](../examples/sightlinks-pixel-job.json)의 영상명·영역·가중치 경로를 사용자 입력에 맞춘다. nano 대신 medium을 쓰려면 weights와 source의 파일명을 함께 바꾼다. 출력은 새 폴더를 지정한다.
+[SightLinks 작업 정의 예시](../examples/sightlinks-pixel-job.json)의 영상명·영역·가중치 경로를 사용자 입력에 맞춘다. nano 대신 medium을 쓰려면 --model medium 또는 config.model을 지정한다. 기본 파일 위치를 바꾸거나 다른 가중치를 쓰는 방법은 [실행 설정](configuration.md)을 따른다. 출력은 새 폴더를 지정한다.
 
 ```sh
 .venv/bin/python -m ortho.cli plan --input-dir /path/to/orthophotos \
@@ -68,7 +68,7 @@ PY
 
 하한을 낮추면 검수 후보와 배경 혼동도 늘어난다. 현재 개발 자료에서는 0.02와 0.01의 느슨한 박스 대응 수가 같았지만, 알려진 후보에 없는 실제 횡단보도의 추가 가능성을 제외하지 않고 누락 우선의 0.01을 선택했다. 후보 부담을 줄이는 비교 설정으로 0.02를 사용할 수 있다. 이 값이 전국 최적값이거나 모든 누락을 해결했다는 뜻은 아니다. 낮은 점수 후보를 후속 검수 단계에서 일괄 삭제하면 수집한 근거를 잃을 수 있으므로 원래 출력·점수를 보존한다.
 
-예제 JSON은 새 작업을 위한 명시적 설정이며 기존 실행 manifest나 다른 모델의 하한을 소급 변경하지 않는다. 하한을 생략한 일반 작업은 실행부의 기존 기본값 0.15를 사용하므로, 이 후보 수집 방침을 적용할 때는 예제처럼 0.01을 명시한다.
+현재는 예제와 실제 실행부의 생략 시 기본값 모두 nano / 0.01이다. 기존 실행 manifest를 소급 변경하지 않으며, 기존 작업 JSON에 명시한 하한은 유지한다. --model·--confidence·--weights, 우선순위와 경로 기준은 [실행 설정](configuration.md)에 있다.
 
 ## 그 밖의 조사 결과
 

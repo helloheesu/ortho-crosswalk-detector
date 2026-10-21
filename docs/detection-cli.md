@@ -2,6 +2,8 @@
 
 독립 탐지 실행과 후보 교환 형식을 제공한다. 실제 모델 성능은 사용 영상과 가중치별로 별도 평가한다.
 
+실제 기본값은 **SightLinks nano / confidence 0.01 / 768px 타일·128px 겹침·128px 여유**다. 작업 파일에 모델·점수를 생략해도 적용된다. `plan`·`detect`에서 `--model`, `--confidence`, `--weights`로 변경할 수 있고 응답 `config`로 최종 적용값을 확인한다. 사용자 가중치 출처, 설정 우선순위와 상대 경로 기준은 [기본값과 실행 설정](configuration.md)에 있다.
+
 ## 독립 실행
 
 검수 웹 앱, Flask, SQLite DB 없이 `ortho.cli`를 실행할 수 있다. 모델은 `detect` 명령에서만 로드한다. 기본 입력은 `./data/inputs/`이며 모든 명령에서 `--input-dir`로 변경할 수 있다. 후속 검수 앱은 이 저장소에 포함하지 않는다.
