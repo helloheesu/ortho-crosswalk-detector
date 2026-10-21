@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ortho-crosswalk-detector"
+version = "0.1.0"
+description = "Reproducible orthophoto crosswalk candidate detection"
+requires-python = ">=3.11"
+dependencies = ["rasterio==1.5.2", "numpy==2.5.4", "shapely==2.2.0", "pyproj==3.8.0", "Pillow==13.0.0"]
+
+[project.optional-dependencies]
+yolo = ["ultralytics==8.4.183"]
+grounding = ["torch==2.14.1", "torchvision==0.29.1", "transformers==4.57.1", "safetensors==0.6.2"]
+test = ["pytest==9.1.1"]
+
+[project.scripts]
+ortho-crosswalk = "ortho.cli:main"
+
+[tool.setuptools.package-data]
+ortho = ["schemas/*.json"]
+
+[tool.setuptools.packages.find]
+include = ["ortho*"]

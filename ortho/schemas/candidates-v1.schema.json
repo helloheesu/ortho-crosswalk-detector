@@ -1,0 +1,278 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:ortho-crosswalk-detector:candidates:1.0",
+  "title": "Orthophoto crosswalk candidate exchange v1.0",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "kind",
+    "status",
+    "run_id",
+    "origin",
+    "area",
+    "model",
+    "sources",
+    "tiles",
+    "candidates",
+    "bundle_id"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "kind": {
+      "const": "ortho-crosswalk-candidates"
+    },
+    "status": {
+      "const": "complete"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "origin": {
+      "enum": [
+        "model",
+        "test_only"
+      ]
+    },
+    "area": {
+      "type": "object",
+      "required": [
+        "space",
+        "geometry"
+      ],
+      "properties": {
+        "space": {
+          "enum": [
+            "map",
+            "pixel"
+          ]
+        },
+        "geometry": {
+          "type": "object"
+        }
+      }
+    },
+    "model": {
+      "type": "object",
+      "required": [
+        "backend"
+      ]
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "tiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/tile"
+      }
+    },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/candidate"
+      }
+    },
+    "bundle_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "bbox": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "id",
+        "relative_path",
+        "sha256",
+        "width",
+        "height",
+        "georef"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "relative_path": {
+          "type": "string"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "georef": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      }
+    },
+    "tile": {
+      "type": "object",
+      "required": [
+        "id",
+        "image_id",
+        "bbox",
+        "path",
+        "sha256",
+        "nodata_fraction",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "image_id": {
+          "type": "string"
+        },
+        "bbox": {
+          "$ref": "#/$defs/bbox"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "nodata_fraction": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "status": {
+          "enum": [
+            "inferred",
+            "unobservable_nodata"
+          ]
+        }
+      }
+    },
+    "candidate": {
+      "type": "object",
+      "required": [
+        "id",
+        "source_id",
+        "bbox_pixels",
+        "score",
+        "origin",
+        "area_relation",
+        "location_status",
+        "geometry",
+        "observation_id",
+        "tile_id",
+        "evidence",
+        "limitations",
+        "possible_duplicates"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source_id": {
+          "type": "string"
+        },
+        "bbox_pixels": {
+          "$ref": "#/$defs/bbox"
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "origin": {
+          "enum": [
+            "model",
+            "test_only"
+          ]
+        },
+        "area_relation": {
+          "enum": [
+            "inside",
+            "boundary"
+          ]
+        },
+        "location_status": {
+          "enum": [
+            "pixel_only",
+            "map_unverified",
+            "map_estimated"
+          ]
+        },
+        "geometry": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "observation_id": {
+          "type": "string"
+        },
+        "tile_id": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "object",
+          "required": [
+            "path",
+            "sha256",
+            "source_pixel_window"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "source_pixel_window": {
+              "$ref": "#/$defs/bbox"
+            }
+          }
+        },
+        "limitations": {
+          "type": "object",
+          "required": [
+            "tile_clipped",
+            "source_clipped",
+            "nodata_fraction"
+          ]
+        },
+        "possible_duplicates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

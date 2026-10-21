@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "images": [
+    {"path": "survey-a/sheet-01.tif"}
+  ],
+  "area": {
+    "name": "사용자가 지정한 분석 영역",
+    "space": "pixel",
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [[[0, 0], [1024, 0], [1024, 1024], [0, 1024], [0, 0]]]
+    }
+  },
+  "config": {
+    "tile_size": 1024,
+    "overlap": 256,
+    "margin": 128,
+    "confidence": 0.15,
+    "class_id": 0,
+    "device": "cpu",
+    "weights": "../models/crosswalk.pt",
+    "source": "사용자가 확인한 가중치 출처",
+    "license": "사용자가 확인한 가중치 라이선스"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "images": [{"path": "selected-orthophoto.tif"}],
+  "area": {
+    "space": "pixel",
+    "name": "User-selected test area",
+    "geometry": {"type": "Polygon", "coordinates": [[[0, 0], [1600, 0], [1600, 1600], [0, 1600], [0, 0]]]}
+  },
+  "config": {
+    "backend": "grounding_dino",
+    "weights": "../models/grounding-dino-tiny",
+    "source": "https://huggingface.co/IDEA-Research/grounding-dino-tiny",
+    "license": "Apache-2.0",
+    "revision": "a2bb814dd30d776dcf7e30523b00659f4f141c71",
+    "text_prompt": "a crosswalk. a zebra crossing.",
+    "confidence": 0.2,
+    "text_threshold": 0.2,
+    "tile_size": 768,
+    "overlap": 128,
+    "margin": 128,
+    "device": "cpu",
+    "threads": 4
+  }
+}
