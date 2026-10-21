@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-21",
+  "report_type": "retrospective aggregate report from completed local experiments",
+  "imagery": {
+    "provider": "국토지리정보원",
+    "product": "2025 정사영상, 25cm",
+    "catalog_url": "https://www.data.go.kr/data/15059919/fileData.do",
+    "permission_observed": "무료; 이용허락범위 제한 없음",
+    "files": [
+      {
+        "name": "(B060)정사영상_2025_36914093.tif",
+        "sha256": "5c708ca1ef486bb1f842e4aa278930bfefa6c93e281d35eaaa2e7949c696e683"
+      },
+      {
+        "name": "(B060)정사영상_2025_36914094.tif",
+        "sha256": "1915db4b0fdf3492451a8a99b76187bac894ddb8508b4b31fccfcbdb6e21bad4"
+      }
+    ]
+  },
+  "reference": {
+    "origin": "GPT proposed candidates on these orthophotos, followed by human decisions",
+    "candidate_records": 110,
+    "confirmed_records": 100,
+    "rejected_records": 6,
+    "unreviewed_records": 4,
+    "scope": "three development regions; non-exhaustive; not unique physical facilities"
+  },
+  "measurement": "maximum-cardinality one-to-one AABB IoU matching per source and region; YOLO OBB converted to envelope for comparison",
+  "limits": [
+    "No complete ground truth: record recovery is not area recall or precision.",
+    "Candidate counts include overlapping-tile duplicate observations.",
+    "Development regions were used for model and threshold choice; not an independent test.",
+    "No additional training; no weight updates.",
+    "No source imagery, evidence crops, per-object labels or model weights are redistributed.",
+    "Hashes identify retained artifacts; they do not provide those artifacts or full third-party reproducibility.",
+    "Pixel coordinates only; not a validated OSM contribution."
+  ]
+}

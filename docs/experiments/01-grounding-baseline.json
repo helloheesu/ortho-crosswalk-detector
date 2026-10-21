@@ -1,0 +1,51 @@
+{
+  "experiment_id": "grounding-baseline-2026-10-21",
+  "context": "evaluation-context.json",
+  "backend": "grounding_dino",
+  "model": {
+    "source": "https://huggingface.co/IDEA-Research/grounding-dino-tiny",
+    "revision": "a2bb814dd30d776dcf7e30523b00659f4f141c71",
+    "weights_sha256": "1a2412ef99bd74bcd3c2a246fa1e48581f8889a1300c9051974741314fc042f3",
+    "license": "Apache-2.0"
+  },
+  "settings": {
+    "tile_size": 768,
+    "overlap": 128,
+    "margin": 128,
+    "confidence": 0.2,
+    "text_threshold": 0.2,
+    "prompt": "a crosswalk. a zebra crossing."
+  },
+  "totals": {
+    "tiles": 62,
+    "matched_iou_030": 7,
+    "matched_iou_050": 7,
+    "candidate_observations": 185
+  },
+  "source_reconstruction": {
+    "runtime_code_sha256": {
+      "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+      "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+      "store.py": "6990321bad17609abb308b8747135305bb1b6113477aa4ebda612b20d0a4bb0f",
+      "service.py": "57e5e23dfcea99ff91b6d8178ce1617c645ab8a3c78d9a4a89540fad3a5da148",
+      "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+      "legacy.py": "fe2223ca722d4545538f76a98c171d73ad4ebf6c884872f3c4c219f18b80ae11",
+      "models.py": "3570ee1993d6e7d54dd0a05450ac0d7ebc6f7bc613dfce1f5f48175fc3dc18aa",
+      "evaluation.py": "8de4f091dffeb385f4c7a734414dc738ee1c9d211e94b237c8d38c2f5371e505",
+      "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+      "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+      "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+      "cli.py": "0a0d47fd2518b9bc57d8a563d4f05b2e0cbbc8430e3a1ab7cca1b875f8d11fd0",
+      "train.py": "9eae60653e4e96da8f043d1639c33515642f6abfbb3bdf7394b6c7c829665043",
+      "app.py": "fd334483aafd04e79ca9a9c6365035b2a8e46a81b43704a5e4b1afe81ab0e754"
+    },
+    "limitation": "First-run models.py differed from the later retained snapshot. A later campus repeat matched retained source and reproduced boxes/scores; exact first-run source reconstruction is incomplete."
+  },
+  "retained_artifact_sha256": {
+    "comparison.json": "dbe90633bb1c9241f8d22f14f0500741d987dc369b99db6ba354c87c963a1275",
+    "compare.py": "ae9dd41d378948eefd301efea60b68f98ce0e4eb421e157e60edfe3b7066230b",
+    "run_validation.py": "dc0e47424197ca42b83fc70d54f4a356b92d0908e51dc88be00593a3bcd3ca4f",
+    "campus-run/manifest.json": "328689aa74e2d956414da2f51723a0a64cc0b6d1b11fa4fc4e76fb58eb2f3572",
+    "campus-cli-repeat/manifest.json": "81ad84efaa8a3d06dcd6bf6051d24460d4ef4ae080810e410a3c4ac695386bbf"
+  }
+}

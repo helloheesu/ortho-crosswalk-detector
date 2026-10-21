@@ -27,9 +27,15 @@ python3 -m venv .venv
 
 Grounding DINO는 선택 실험 어댑터입니다. `requirements-grounding.lock.txt`와 `examples/grounding-pixel-job.json`을 참고하세요. 일반 모델의 텍스트 프롬프트 탐지를 횡단보도 전용 모델의 정확도로 해석하지 않습니다.
 
+항공 횡단보도용 공개 SightLinks YOLO11 OBB 가중치도 실행할 수 있습니다. 개발팀 공식 GitHub의 nano·medium 체크포인트를 기존 어댑터에서 실제 실행했습니다. [고정 출처·해시·라이선스 선언·다운로드 방법](docs/models.md)과 [작업 정의 예시](examples/sightlinks-pixel-job.json)를 제공합니다. 모델 가중치는 이 저장소에 포함하지 않습니다.
+
+현재 SightLinks 실행 예제는 **nano·점수 하한 0.01**로 누락을 줄이는 후보 수집을 우선합니다. 낮은 점수 관측도 보존하므로 사람이 검수할 후보는 늘어납니다. 점수는 실제 확률이 아니며, 이 설정의 선택에는 개발 구역 비교를 사용했습니다. 검증 구역에서 점수 하한·후보 수·누락을 함께 확인해야 합니다.
+
 - [명령과 출력 형식](docs/detection-cli.md)
 - [구조와 책임 경계](docs/architecture.md)
 - [검증 범위](docs/verification.md)
+- [실제 모델 비교와 설정 선택 이력](docs/experiments/README.md)
+- [항공 횡단보도 모델과 추가 학습 준비](docs/models.md)
 - [외부 의존성과 공개 상태](docs/third-party.md)
 
 ## 검증

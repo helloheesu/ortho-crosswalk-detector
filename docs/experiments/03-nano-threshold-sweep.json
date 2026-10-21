@@ -1,0 +1,290 @@
+{
+  "experiment_id": "nano-threshold-sweep-2026-10-21",
+  "parent": "sightlinks-comparison-2026-10-21",
+  "context": "evaluation-context.json",
+  "fixed_settings": {
+    "tile_size": 768,
+    "overlap": 128,
+    "margin": 128,
+    "nms_iou": 0.7
+  },
+  "totals": [
+    {
+      "confidence": 0.2,
+      "known_confirmed": 100,
+      "matched_iou_0.3": 93,
+      "matched_iou_0.5": 83,
+      "candidate_observations": 222,
+      "known_rejected_triggered": 1,
+      "tiles": 62,
+      "max_candidates_one_tile": 17
+    },
+    {
+      "confidence": 0.1,
+      "known_confirmed": 100,
+      "matched_iou_0.3": 96,
+      "matched_iou_0.5": 86,
+      "candidate_observations": 249,
+      "known_rejected_triggered": 4,
+      "tiles": 62,
+      "max_candidates_one_tile": 19
+    },
+    {
+      "confidence": 0.05,
+      "known_confirmed": 100,
+      "matched_iou_0.3": 96,
+      "matched_iou_0.5": 86,
+      "candidate_observations": 263,
+      "known_rejected_triggered": 4,
+      "tiles": 62,
+      "max_candidates_one_tile": 21
+    },
+    {
+      "confidence": 0.02,
+      "known_confirmed": 100,
+      "matched_iou_0.3": 97,
+      "matched_iou_0.5": 86,
+      "candidate_observations": 308,
+      "known_rejected_triggered": 4,
+      "tiles": 62,
+      "max_candidates_one_tile": 24
+    },
+    {
+      "confidence": 0.01,
+      "known_confirmed": 100,
+      "matched_iou_0.3": 97,
+      "matched_iou_0.5": 87,
+      "candidate_observations": 346,
+      "known_rejected_triggered": 4,
+      "tiles": 62,
+      "max_candidates_one_tile": 25
+    }
+  ],
+  "selected_confidence": 0.01,
+  "decision": "Preserve lower-score observations for human review under a missed-candidate-first development policy; 0.02 had equal IoU 0.30 reference recovery with fewer observations. Not a globally optimal setting.",
+  "benchmark": {
+    "kind": "local_cpu_warm_inference_benchmark",
+    "python": "3.12.14",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "confidence": 0.01,
+    "tile_size": 768,
+    "cpu_threads": 4,
+    "sample_tiles": 12,
+    "warmup_tiles": 1,
+    "rounds": 3,
+    "models": {
+      "n": {
+        "weights_bytes": 5778620,
+        "parameter_count": 2661702,
+        "model_load_seconds": 0.18608250000397675,
+        "inference_12_tiles_seconds": [
+          0.5417229589947965,
+          0.5212915829906706,
+          0.5270404999901075
+        ],
+        "median_12_tiles_seconds": 0.5270404999901075,
+        "per_round_observation_counts": [
+          88,
+          88,
+          88
+        ],
+        "actual_cpu_threads": 4
+      },
+      "m": {
+        "weights_bytes": 42375886,
+        "parameter_count": 20902614,
+        "model_load_seconds": 0.046803583012660965,
+        "inference_12_tiles_seconds": [
+          2.289946291013621,
+          2.301418624992948,
+          2.3765079579898156
+        ],
+        "median_12_tiles_seconds": 2.301418624992948,
+        "per_round_observation_counts": [
+          73,
+          73,
+          73
+        ],
+        "actual_cpu_threads": 4
+      }
+    },
+    "excluded_time": "model loading, TIFF reads, evidence PNG writes and bundle export"
+  },
+  "runs": {
+    "nano-conf-0.01-campus-run": {
+      "manifest_sha256": "2e94dc0c11b6e64a6061625e6153fd0798274e02ab61cb3147f40e2f2712bd06",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "4bd13c1def936232ca3ca041be0756039150e916e420dc6da3d067f879e83904"
+    },
+    "nano-conf-0.01-rail-run": {
+      "manifest_sha256": "11e3541a51e194c98006252b7f28ab4d9ffeb8bc8b6e1ba21c71520a9d531cb3",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "4bd13c1def936232ca3ca041be0756039150e916e420dc6da3d067f879e83904"
+    },
+    "nano-conf-0.01-river-run": {
+      "manifest_sha256": "51b4003b23386acdb73f9b3c46b4842f4443f552d6c74acfe5ccd618a8e4cd96",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "4bd13c1def936232ca3ca041be0756039150e916e420dc6da3d067f879e83904"
+    },
+    "nano-conf-0.02-campus-run": {
+      "manifest_sha256": "6ceb6e7f0f2d01dc44d2b17786211d157c531d1450f0ee8f138c8bdde1cb478c",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "4bd13c1def936232ca3ca041be0756039150e916e420dc6da3d067f879e83904"
+    },
+    "nano-conf-0.02-rail-run": {
+      "manifest_sha256": "91ed5e754c5391d69146a83f220f3fdeba7974cbfe7250187ee7be667cf2873c",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "4bd13c1def936232ca3ca041be0756039150e916e420dc6da3d067f879e83904"
+    },
+    "nano-conf-0.02-river-run": {
+      "manifest_sha256": "b67740165dcc4a9cc1a06768b3e9c22967a89f8c634d5a61716d0d4c4ad06366",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "4bd13c1def936232ca3ca041be0756039150e916e420dc6da3d067f879e83904"
+    },
+    "nano-conf-0.05-campus-run": {
+      "manifest_sha256": "f5357701609c42cc1c2521c9cb1552bcda2fc51fd82e406979c7dcecd88658bd",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "4bd13c1def936232ca3ca041be0756039150e916e420dc6da3d067f879e83904"
+    },
+    "nano-conf-0.05-rail-run": {
+      "manifest_sha256": "b73e328ac0e27077c7a391326d7fc83be5217ca6b98d8d6673cea052c6b7667c",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "4bd13c1def936232ca3ca041be0756039150e916e420dc6da3d067f879e83904"
+    },
+    "nano-conf-0.05-river-run": {
+      "manifest_sha256": "c58a78ec4d138cdae5dbd3629ce1bc1170664ffb0085e85165a753277e2726c0",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "4bd13c1def936232ca3ca041be0756039150e916e420dc6da3d067f879e83904"
+    },
+    "nano-conf-0.10-campus-run": {
+      "manifest_sha256": "e63c88dc9e005cf36946eb9f7e8b4119a42b278b6ef6af8b478c735019d52656",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "4bd13c1def936232ca3ca041be0756039150e916e420dc6da3d067f879e83904"
+    },
+    "nano-conf-0.10-rail-run": {
+      "manifest_sha256": "f500d7b996036c4fca412834093b0b2ea11174400e9f1f1a7c99cb3a58c66002",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "4bd13c1def936232ca3ca041be0756039150e916e420dc6da3d067f879e83904"
+    },
+    "nano-conf-0.10-river-run": {
+      "manifest_sha256": "5a452b541098d398be6613e2539291dba744c7a2bf1bc4d7ff97419d57a3ef83",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "4bd13c1def936232ca3ca041be0756039150e916e420dc6da3d067f879e83904"
+    }
+  },
+  "retained_artifact_sha256": {
+    "comparison.json": "a3891cf67d9eff3f03e09b0ae1ba4eaf87be91f1a7f453526e36571320b585c7",
+    "compare_sweep.py": "cf2aa19d6af16945b69ce4bd99202cbc322932a99eb310342f370790021a2364",
+    "run_sweep.py": "f22216663053beb9e3c354c3f7be36d61cd63c45a527b568d4617beae6f58828",
+    "benchmark.py": "ce465ebe29bc11b729da24d974ce122da29caa6b7d93ea240d6cd1e425f0e28e",
+    "benchmark-conf-0.01.json": "e7c3b1260b3f8e36fb22a586a9221358c7df67248d05fbaa4bc12ce99b8842df"
+  }
+}

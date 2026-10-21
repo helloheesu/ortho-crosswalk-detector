@@ -1,0 +1,135 @@
+{
+  "experiment_id": "sightlinks-comparison-2026-10-21",
+  "parent": "grounding-baseline-2026-10-21",
+  "context": "evaluation-context.json",
+  "model_source": "https://github.com/UCL-SightLinks/SightLinks-Main/tree/99634dbb4c3628353a4225df51a266c622891807",
+  "license_scope": "Upstream repository MIT; checkpoint metadata AGPL-3.0; training dataset license unknown. See ../models.md.",
+  "settings": "same frozen source pixels, 768px tiles, 128px overlap, 128px context margin; confidence 0.20; YOLO per-tile NMS IoU 0.70. Scores across models are not calibrated or equivalent.",
+  "totals": [
+    {
+      "model": "grounding-dino",
+      "tiles": 62,
+      "known_confirmed_records": 100,
+      "matched_0.3": 7,
+      "matched_0.5": 7,
+      "candidate_observations": 185,
+      "unmatched_to_any_legacy_0.3": 178,
+      "known_rejected_triggered_0.3": 0,
+      "known_rejected_triggered_0.5": 0
+    },
+    {
+      "model": "yolo-n",
+      "tiles": 62,
+      "known_confirmed_records": 100,
+      "matched_0.3": 93,
+      "matched_0.5": 83,
+      "candidate_observations": 222,
+      "unmatched_to_any_legacy_0.3": 103,
+      "known_rejected_triggered_0.3": 1,
+      "known_rejected_triggered_0.5": 1
+    },
+    {
+      "model": "yolo-m",
+      "tiles": 62,
+      "known_confirmed_records": 100,
+      "matched_0.3": 93,
+      "matched_0.5": 82,
+      "candidate_observations": 201,
+      "unmatched_to_any_legacy_0.3": 80,
+      "known_rejected_triggered_0.3": 4,
+      "known_rejected_triggered_0.5": 4
+    }
+  ],
+  "retained_artifact_sha256": {
+    "comparison.json": "198cedb3a12bf8db3e8f4f634e033b0f814492b7f00a2b897f9edb219594e5fa",
+    "compare_models.py": "1568eb77ed73bf530cb40dc4ad8be1edf9d60773390954bba0ae3798da951ac1",
+    "run_comparison.py": "628623ea05204bcf96e8cbe9e9e7167741153dc566b84c4a000a3df5fdcb30ba",
+    "checkpoint-licenses.json": "4809373db31f9e51af54a3388753a7dd8098e46f018a3d3913a90f9bb04f8562"
+  },
+  "runs": {
+    "yolo-m-campus-run": {
+      "manifest_sha256": "59b8eb6e7461f2d7f77f2a4e8b64e05b76444b71df6da1ab58a189d597356503",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "1bf31821522294e0199d149e20cf7372aa8803cbe8d6c5255901673b7db531ed"
+    },
+    "yolo-m-rail-run": {
+      "manifest_sha256": "276ac5e907e1550bf254a7936a307c64eeece42e0e656be92258e83c53040909",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "1bf31821522294e0199d149e20cf7372aa8803cbe8d6c5255901673b7db531ed"
+    },
+    "yolo-m-river-run": {
+      "manifest_sha256": "b0de15b084fb3a5b35ac6c4bf33d7a976db78d769e2b0b45d9d53ab6c8069a23",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "1bf31821522294e0199d149e20cf7372aa8803cbe8d6c5255901673b7db531ed"
+    },
+    "yolo-n-campus-run": {
+      "manifest_sha256": "4d7544257fb46564526baaf3d581481c003765003a0bb4502238be3e908bb26d",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "4bd13c1def936232ca3ca041be0756039150e916e420dc6da3d067f879e83904"
+    },
+    "yolo-n-rail-run": {
+      "manifest_sha256": "83b17b41ea1588093be3afa792bf4c4ebbe880891cd8054dc18570b9f7b4383b",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "4bd13c1def936232ca3ca041be0756039150e916e420dc6da3d067f879e83904"
+    },
+    "yolo-n-river-run": {
+      "manifest_sha256": "5f8f9eea98b52e72427ab82024fbec7c4cf08bd84d2d812fa8466f1f7efebe1a",
+      "code_sha256": {
+        "catalog.py": "49e01b40d07326891df6bf00f309c2056ceffad6077eeb2e916ad3bfdd66d08c",
+        "geo.py": "0e2894a670029fa19e03aaa0b06dd4aca495a76d7a93a2cb4f5974dc7f80d95b",
+        "detection.py": "7800a326c71a94023703b8b8424b32e98bb6707b463ec7143d18613403f5cd2e",
+        "models.py": "eecabdca7409f57458ba03b23c1f3b35f27071f2f1a1130638d19100e92d3a31",
+        "records.py": "4c644bf0683cd7093e3158e1d6d7787f49d0360720712ecd21c5aecf6c6e69b2",
+        "exchange.py": "15564a35631b4cc2f1e4b03e6034e8aa6d78c2a8ac31805bd75c36e1b82996a4",
+        "__init__.py": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed",
+        "cli.py": "c6b993ff46ff78984ba42c476f45d1518d02de6de1cdd3447dcd4ed0f5bbec78"
+      },
+      "model_weights_sha256": "4bd13c1def936232ca3ca041be0756039150e916e420dc6da3d067f879e83904"
+    }
+  }
+}
