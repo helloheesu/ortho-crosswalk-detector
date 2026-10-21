@@ -42,4 +42,4 @@ Grounding DINO는 선택 실험 어댑터입니다. `requirements-grounding.lock
 
 ## 공개 상태
 
-공개용으로 분리한 소스 저장소입니다. 프로젝트 자체의 배포 라이선스는 아직 선택하지 않았으며, 라이선스 확정 전 오픈소스 배포 완료로 간주하지 않습니다.
+프로젝트 코드의 라이선스는 **GNU AGPL v3.0 only (`AGPL-3.0-only`)**입니다. [LICENSE](LICENSE)와 [외부 의존성·데이터의 경계](docs/third-party.md)를 참고하세요. Copyright (C) 2026 ortho-crosswalk-detector contributors. 이 프로그램은 라이선스에 명시된 범위에서 무보증으로 제공됩니다. 원본 영상·라벨·외부 가중치에 이 라이선스를 새로 부여하지 않습니다. GitHub 게시 여부는 코드 라이선스 선택과 별개입니다.
