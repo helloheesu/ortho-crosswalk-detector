@@ -164,6 +164,12 @@ def main(argv=None):
     p = argparse.ArgumentParser(description='설치 한 번, 폴더 경로 + 작업 ID로 로컬 탐지 실행')
     sub = p.add_subparsers(dest='command', required=True)
     sub.add_parser('setup', help='전용 가상환경·의존성·nano 모델 준비 (인터넷 필요)')
+    c = sub.add_parser('make-jobs', help='영상 전체(기본) 또는 격자 분할 작업 JSON 생성; 추론 없음')
+    c.add_argument('folder', help='영상이 있는 폴더; 생성 JSON도 이곳에 저장')
+    c.add_argument('--image', required=True, help='폴더 기준 영상 상대 경로')
+    c.add_argument('--name', required=True, help='작업 이름 또는 분할 작업 이름 접두사')
+    c.add_argument('--columns', type=int, default=1)
+    c.add_argument('--rows', type=int, default=1)
     for name in ('plan', 'run'):
         c = sub.add_parser(name, help='계획만 확인' if name == 'plan' else '계획 → 탐지 → 검증 → 반환 ZIP')
         c.add_argument('folder', help='TIFF와 작업 JSON이 함께 있는 폴더')
@@ -183,6 +189,12 @@ def main(argv=None):
                 'Linux: 배포판에서 Python 3.11 이상과 venv 패키지를 설치하세요.')
         if args.command == 'setup':
             setup()
+        elif args.command == 'make-jobs':
+            if not python().exists():
+                raise ValueError('먼저 python3 run.py setup 을 실행하세요.')
+            subprocess.run([str(python()), '-m', 'ortho.jobgen', str(Path(args.folder).expanduser().resolve()),
+                            '--image', args.image, '--name', args.name,
+                            '--columns', str(args.columns), '--rows', str(args.rows)], cwd=ROOT, check=True)
         else:
             run(args.folder, args.ids, plan_only=args.command == 'plan')
         return 0

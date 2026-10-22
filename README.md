@@ -46,6 +46,33 @@ python3 run.py setup
 .venv/bin/python -m ortho.cli validate-bundle work/area-a/run-01
 ```
 
+### 영상 전체를 실행하거나 여러 작업으로 나누기
+
+영역 선정 UI 없이 작업 JSON을 생성할 수 있습니다. `setup` 후 영상이 있는 폴더와 영상 파일을 지정하세요. **기본은 분할 없음**이며, 영상 한 장 전체를 작업 하나로 만듭니다.
+
+```sh
+python3 run.py make-jobs "/path/to/inputs" --image "sheet.tif" --name survey
+python3 run.py plan "/path/to/inputs" survey
+python3 run.py run "/path/to/inputs" survey
+```
+
+여러 사람이 나눠 처리하려면 행·열 수를 명시합니다. 다음은 예시이며 고정 기본값이 아닙니다.
+
+```sh
+python3 run.py make-jobs "/path/to/inputs" --image "sheet.tif" --name survey-grid --columns 3 --rows 2
+python3 run.py run "/path/to/inputs" survey-grid-R1C1 survey-grid-R1C2
+```
+
+- 영상 **한 장씩** 명시적으로 선택합니다. 영상이 여러 장이면 서로 다른 `--name`으로 명령을 반복하세요. 폴더 전체를 자동 선택하지 않습니다.
+- 분할하지 않으면 `survey.json` 하나, 분할하면 `survey-grid-R1C1.json` 같은 파일을 행 우선 순서로 생성합니다. R1은 위쪽, C1은 왼쪽입니다.
+- JSON과 `<이름>.jobs.json` 작업 목록을 입력 폴더에 저장합니다. 목록에는 영상 크기·행/열 수·생성 파일을 기록하며 탐지 입력은 개별 작업 JSON입니다.
+- 경계는 정수 픽셀 좌표입니다. 나누어떨어지지 않는 크기도 원본 전체를 빠짐·면적 중복 없이 덮습니다. 기존 파일은 덮어쓰지 않습니다.
+- 생성은 영상 헤더를 읽어 좌표를 만드는 단계입니다. TIFF를 자르거나 복사하지 않고, 탐지·모델 로딩·업로드를 하지 않습니다. `config`는 비어 있어 실행 시 공용 기본값을 사용합니다. 조건을 고정하려면 작업 JSON에 명시하세요.
+- 전달할 때 선택한 원본 영상과 생성한 작업 JSON을 같은 상대 경로 구조로 묶으세요. 수신자는 폴더와 작업 ID를 기존 `run` 명령에 전달합니다. 배정·공유 방식은 도구 밖에서 정합니다.
+- **작업 분할 없음**과 **모델 추론 타일링 없음**은 다릅니다. 영상 전체를 하나의 작업으로 실행해도 모델은 내부에서 겹치는 타일로 처리합니다. 서로 다른 작업의 경계 주변에서도 관측이 중복될 수 있습니다.
+
+직접 좌표를 지정하려면 위의 `examples/pixel-job.json` 경로를 사용하세요. 이 명령은 영상 전체 또는 전체의 균등 격자만 생성합니다.
+
 ### 이미 영역을 정의한 작업 JSON이 있다면
 
 `run.py`는 반복 실행용 편의 명령입니다. 영상과 JSON이 같은 입력 폴더에 있고 JSON 파일 이름과 `area.name`이 같을 때 사용할 수 있습니다. 작업 ID는 사용자가 정하는 이름이며 특정 분할 수·지역·배정 시스템을 전제하지 않습니다. 그렇지 않은 파일 구조는 위 CLI의 `--job` 경로를 직접 사용하세요.
