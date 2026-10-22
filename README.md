@@ -10,6 +10,15 @@
 
 Python 3.11 이상과 Git이 필요합니다. `run.py`는 가상환경 활성화 없이 설치·모델 준비와 실행 단계를 묶어 줍니다. Node/npm은 필요 없습니다. 아래는 macOS/Linux 기준이며 Windows는 `python3` 대신 `py -3`를 사용하세요.
 
+macOS 기본 `python3`가 3.9여도 기존 `.venv` 또는 PATH에 Python 3.11 이상이 있으면 자동으로 찾아 사용합니다. 없다면 먼저 설치하세요. 시스템 Python을 교체할 필요는 없습니다.
+
+```sh
+# macOS: Homebrew가 설치되어 있는 경우
+brew install python@3.12
+```
+
+설치 후에도 `python3`가 구버전을 가리키면 아래 명령의 `python3`를 `python3.12`로 바꾸면 됩니다. Windows에서는 Python 3.12 설치 후 `py -3.12`를 사용하세요.
+
 처음 한 번:
 
 ```sh

@@ -86,3 +86,18 @@ def test_rejects_wrong_id_and_output_inside_inputs(tmp_path, monkeypatch):
     shutil.copy2(folder / 'source.tif', root / 'source.tif')
     with pytest.raises(ValueError, match='자료 폴더 안'):
         runner.run(root, ['A'])
+
+
+def test_old_python_hands_off_to_existing_environment(tmp_path, monkeypatch):
+    root, folder = prepare(tmp_path, monkeypatch)
+    monkeypatch.setattr(runner.sys, 'version_info', type('Version', (tuple,), {
+        'major': 3, 'minor': 9})([3, 9]))
+    monkeypatch.setattr(runner, 'compatible_python', lambda: '/existing/python3.12')
+    commands = []
+    def invoke(command):
+        commands.append(command)
+        return type('Result', (), {'returncode': 7})()
+    monkeypatch.setattr(runner.subprocess, 'run', invoke)
+    assert runner.main(['run', str(folder), 'A']) == 7
+    assert commands[0][0] == '/existing/python3.12'
+    assert commands[0][2:] == ['run', str(folder), 'A']

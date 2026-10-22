@@ -23,6 +23,23 @@ def python():
     return ROOT / '.venv' / ('Scripts/python.exe' if sys.platform == 'win32' else 'bin/python')
 
 
+def compatible_python():
+    """Prefer the existing environment; do not change the system Python."""
+    candidates = [str(python())]
+    candidates.extend(filter(None, (shutil.which(name) for name in
+                      ('python3.12', 'python3.13', 'python3.14', 'python3.11', 'python3'))))
+    for candidate in dict.fromkeys(candidates):
+        try:
+            probe = subprocess.run([candidate, '-c',
+                                    'import sys; sys.exit(0 if sys.version_info >= (3, 11) else 1)'],
+                                   capture_output=True, timeout=10)
+            if probe.returncode == 0:
+                return candidate
+        except (OSError, subprocess.TimeoutExpired):
+            continue
+    return None
+
+
 def sha(path):
     with path.open('rb') as stream:
         return hashlib.file_digest(stream, 'sha256').hexdigest()
@@ -149,7 +166,16 @@ def main(argv=None):
     args = p.parse_args(argv)
     try:
         if sys.version_info < (3, 11):
-            raise ValueError('Python 3.11 이상이 필요합니다')
+            interpreter = compatible_python()
+            if interpreter:
+                print(f'Python {sys.version_info.major}.{sys.version_info.minor} 대신 {interpreter} 사용', flush=True)
+                return subprocess.run([interpreter, str(Path(__file__).resolve()),
+                                       *(sys.argv[1:] if argv is None else argv)]).returncode
+            raise ValueError(
+                'Python 3.11 이상을 찾지 못했습니다. macOS(Homebrew): '
+                'brew install python@3.12 실행 후 python3.12 run.py setup 을 실행하세요. '
+                'Windows: Python 3.12 설치 후 py -3.12 run.py setup 을 실행하세요. '
+                'Linux: 배포판에서 Python 3.11 이상과 venv 패키지를 설치하세요.')
         if args.command == 'setup':
             setup()
         else:
