@@ -100,7 +100,11 @@ def cli(args, log):
     log.flush()
     if result.returncode:
         raise RuntimeError(result.stderr.strip() or result.stdout.strip() or f'종료 코드 {result.returncode}')
-    return json.loads(result.stdout)
+    try:
+        return json.loads(result.stdout)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError('명령은 종료됐지만 JSON 응답을 읽지 못했습니다. '
+                           'commands.log와 생성된 bundle을 확인하세요. 탐지 실패와는 별개일 수 있습니다.') from exc
 
 
 def git(*args):

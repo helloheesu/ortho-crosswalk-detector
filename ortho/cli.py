@@ -1,5 +1,6 @@
 """Independent stage-1 commands. No review application or database dependency."""
 import argparse
+from contextlib import redirect_stdout
 import json
 import sys
 from pathlib import Path
@@ -116,53 +117,55 @@ def parser():
 def main(argv=None):
     args = parser().parse_args(argv)
     try:
-        if args.command == 'inspect':
-            result = {'images': catalog.scan(args.input_dir), 'inference_executed': False}
-        elif args.command == 'preview':
-            if not 100 <= args.size <= 1800:
-                raise ValueError('미리보기 크기는 100~1800px입니다')
-            im = selected_image(args.input_dir, args.image)
-            payload = catalog.preview(args.input_dir, im, args.bbox, args.size)
-            path = output_file(args.input_dir, args.output)
-            path.write_bytes(payload)
-            result = {'preview': str(path), 'image_id': im['id'], 'inference_executed': False}
-        elif args.command == 'calibrate':
-            im = selected_image(args.input_dir, args.image)
-            data = read_json(args.points)
-            if not str(data.get('reference', '')).strip():
-                raise ValueError('기준 지도의 출처 reference를 기록하세요')
-            g = geo.fit(data['points'], im['width'], im['height'])
-            verified = data.get('verified', False)
-            if type(verified) is not bool or (verified and not str(data.get('verification_note', '')).strip()):
-                raise ValueError('verified와 중첩 점검 근거 verification_note를 확인하세요')
-            g.update(version=uid('georef'), created_at=now(), image_path=im['relative_path'], source_fingerprint=catalog.fingerprint(args.input_dir, im),
-                     reference=data['reference'], verified=verified,
-                     verification_note=data.get('verification_note', ''))
-            path = output_file(args.input_dir, args.output)
-            write_json(path, g)
-            result = {'georef': str(path), 'verified': verified, 'fit_rmse_m': g['fit_rmse_m'],
-                      'check_rmse_m': g['check_rmse_m'], 'absolute_accuracy_m': None}
-        elif args.command in ('plan', 'detect'):
-            description, config = load_job(args.job)
-            config = execution_config(config, args)
-            area, images = prepare_job(args.input_dir, description)
-            if args.command == 'plan':
-                planned = plan_tiles(area, images, config)
-                result = {'area': area, 'config': config, 'tile_count': len(planned),
-                          'tiles': [{'source_id': im['id'], 'source_path': im['relative_path'], 'bbox_pixels': b}
-                                    for _, im, _, b in planned], 'inference_executed': False}
-            else:
-                if not config.get('weights'):
-                    raise ValueError('작업 config에 실제 횡단보도 weights 경로가 필요합니다')
-                result_run = execute(args.input_dir, area, images, config, args.output_dir)
-                result = {'run_id': result_run['id'], 'status': result_run['status'],
-                          'bundle': str(Path(args.output_dir).expanduser().resolve() / 'candidates.json'),
-                          'origin': result_run['origin'], 'tile_count': result_run['tile_count'],
-                          'config': result_run['config']}
-        elif args.command == 'validate-bundle':
-            data = read_bundle(args.path, allow_test=args.allow_test)
-            result = {'schema_version': data['schema_version'], 'origin': data['origin'],
-                      'candidates': len(data['candidates']), 'evidence_integrity': 'verified'}
+        # Third-party startup messages belong on stderr; stdout is the JSON API.
+        with redirect_stdout(sys.stderr):
+            if args.command == 'inspect':
+                result = {'images': catalog.scan(args.input_dir), 'inference_executed': False}
+            elif args.command == 'preview':
+                if not 100 <= args.size <= 1800:
+                    raise ValueError('미리보기 크기는 100~1800px입니다')
+                im = selected_image(args.input_dir, args.image)
+                payload = catalog.preview(args.input_dir, im, args.bbox, args.size)
+                path = output_file(args.input_dir, args.output)
+                path.write_bytes(payload)
+                result = {'preview': str(path), 'image_id': im['id'], 'inference_executed': False}
+            elif args.command == 'calibrate':
+                im = selected_image(args.input_dir, args.image)
+                data = read_json(args.points)
+                if not str(data.get('reference', '')).strip():
+                    raise ValueError('기준 지도의 출처 reference를 기록하세요')
+                g = geo.fit(data['points'], im['width'], im['height'])
+                verified = data.get('verified', False)
+                if type(verified) is not bool or (verified and not str(data.get('verification_note', '')).strip()):
+                    raise ValueError('verified와 중첩 점검 근거 verification_note를 확인하세요')
+                g.update(version=uid('georef'), created_at=now(), image_path=im['relative_path'], source_fingerprint=catalog.fingerprint(args.input_dir, im),
+                         reference=data['reference'], verified=verified,
+                         verification_note=data.get('verification_note', ''))
+                path = output_file(args.input_dir, args.output)
+                write_json(path, g)
+                result = {'georef': str(path), 'verified': verified, 'fit_rmse_m': g['fit_rmse_m'],
+                          'check_rmse_m': g['check_rmse_m'], 'absolute_accuracy_m': None}
+            elif args.command in ('plan', 'detect'):
+                description, config = load_job(args.job)
+                config = execution_config(config, args)
+                area, images = prepare_job(args.input_dir, description)
+                if args.command == 'plan':
+                    planned = plan_tiles(area, images, config)
+                    result = {'area': area, 'config': config, 'tile_count': len(planned),
+                              'tiles': [{'source_id': im['id'], 'source_path': im['relative_path'], 'bbox_pixels': b}
+                                        for _, im, _, b in planned], 'inference_executed': False}
+                else:
+                    if not config.get('weights'):
+                        raise ValueError('작업 config에 실제 횡단보도 weights 경로가 필요합니다')
+                    result_run = execute(args.input_dir, area, images, config, args.output_dir)
+                    result = {'run_id': result_run['id'], 'status': result_run['status'],
+                              'bundle': str(Path(args.output_dir).expanduser().resolve() / 'candidates.json'),
+                              'origin': result_run['origin'], 'tile_count': result_run['tile_count'],
+                              'config': result_run['config']}
+            elif args.command == 'validate-bundle':
+                data = read_bundle(args.path, allow_test=args.allow_test)
+                result = {'schema_version': data['schema_version'], 'origin': data['origin'],
+                          'candidates': len(data['candidates']), 'evidence_integrity': 'verified'}
         print(json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False))
         return 0
     except (ValueError, TypeError, KeyError, OSError, RuntimeError) as exc:
