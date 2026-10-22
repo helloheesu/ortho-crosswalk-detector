@@ -58,10 +58,7 @@ def execution_config(config, args):
 
 def selected_image(root, relative):
     images = catalog.scan(root)
-    im = next((i for i in images if i['relative_path'] == relative and not i.get('error')), None)
-    if im is None:
-        raise ValueError('입력 목록에서 사용할 영상의 상대 경로를 선택하세요')
-    return im
+    return catalog.select_image(images, relative)
 
 
 def output_file(input_dir, path):

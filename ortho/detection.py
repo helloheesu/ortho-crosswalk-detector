@@ -85,15 +85,14 @@ def prepare_job(input_dir, description):
     if not selections or (area['space'] == 'pixel' and len(selections) != 1):
         raise ValueError('사용 영상을 명시하세요. 픽셀 작업은 영상 한 개를 선택합니다')
     images = catalog.scan(input_dir)
-    by_path = {im['relative_path']: im for im in images if not im.get('error')}
     selected = []
     seen = set()
     for entry in selections:
         relative = entry['path']
-        if relative not in by_path or relative in seen:
-            raise ValueError('입력 폴더의 사용 가능한 영상을 중복 없이 선택하세요: ' + str(relative))
-        seen.add(relative)
-        im = by_path[relative]
+        im = catalog.select_image(images, relative)
+        if im['id'] in seen:
+            raise ValueError('같은 영상을 중복 선택할 수 없습니다: ' + str(relative))
+        seen.add(im['id'])
         g = validate_georef(entry.get('georef', im.get('georef')))
         source = {'image_id': im['id'], 'georef': g}
         if area['space'] == 'map' and g is None:

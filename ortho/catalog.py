@@ -4,6 +4,7 @@ import io
 import json
 import math
 import warnings
+import unicodedata
 from pathlib import Path
 import numpy as np
 import rasterio
@@ -76,6 +77,21 @@ def scan(root):
             item['error']=str(exc)
         out.append(item)
     return out
+
+
+def select_image(images, relative):
+    """Match canonical Unicode equivalents, retaining the actual disk path."""
+    key = unicodedata.normalize('NFC', relative)
+    matches = [im for im in images
+               if unicodedata.normalize('NFC', im['relative_path']) == key]
+    if len(matches) > 1:
+        raise ValueError('유니코드 표기가 같은 영상이 여러 개입니다: ' + relative)
+    if not matches:
+        raise ValueError('입력 목록에 영상이 없습니다: ' + relative)
+    image = matches[0]
+    if image.get('error'):
+        raise ValueError('영상을 읽을 수 없습니다: ' + relative + ': ' + image['error'])
+    return image
 
 
 def image_path(root,item):
