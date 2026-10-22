@@ -6,7 +6,7 @@
 
 영상 메타데이터와 미리보기, 픽셀/지도 영역, 기준점 보정, 겹침 타일 추론, 중복 가능 관측, 이동 가능한 후보·근거 묶음을 다룹니다. 사람의 시설 확정, 검수 DB, OSM 편집과 서비스 연결은 포함하지 않습니다. 원본을 수정하지 않으며 위치 미확정·가림·실패 실행을 구분합니다.
 
-## AI 없이 바로 실행하기 — 배정된 작업 JSON이 있는 경우
+## 설치와 명시적인 탐지 영역 선택
 
 Python 3.11 이상과 Git이 필요합니다. `run.py`는 가상환경 활성화 없이 설치·모델 준비와 실행 단계를 묶어 줍니다. Node/npm은 필요 없습니다. 아래는 macOS/Linux 기준이며 Windows는 `python3` 대신 `py -3`를 사용하세요.
 
@@ -29,10 +29,29 @@ python3 run.py setup
 
 `setup`은 전용 `.venv`에 고정 의존성을 설치하고, 공식 고정 버전의 SightLinks nano 모델을 내려받아 SHA256을 검사합니다. 인터넷 연결이 필요합니다. 모델 출처·이용 조건은 [모델 문서](docs/models.md)에 있습니다. 이미 clone했다면 그 폴더에서 `setup`만 실행하면 됩니다.
 
-ZIP을 풀어 **TIFF와 JSON이 들어 있는 폴더 경로**, 배정표의 **작업 ID**만 넣습니다:
+처음 사용하는 영상은 먼저 목록·미리보기를 확인하고, 분석할 영역을 직접 지정합니다. 아래 영상명과 좌표는 형식 예시입니다. 실제 영상 크기와 원하는 범위로 바꾸세요.
 
 ```sh
-python3 run.py run "/Users/me/Downloads/crosswalk-test-12areas" V2-36914093-R1C1
+.venv/bin/python -m ortho.cli inspect --input-dir "/path/to/inputs"
+.venv/bin/python -m ortho.cli preview --input-dir "/path/to/inputs" \
+  --image "survey-a/sheet-01.tif" --output work/preview.png
+```
+
+`examples/pixel-job.json`을 복사해 `images[].path`와 `area.geometry`를 수정합니다. 픽셀 좌표는 원본 좌상단 기준입니다. 지도 Polygon은 좌표정보가 확인된 영상에 사용하세요. 전체 폴더나 특정 개수의 구역을 자동으로 분석하지 않습니다.
+
+```sh
+.venv/bin/python -m ortho.cli plan --input-dir "/path/to/inputs" --job "/path/to/area-a.json"
+.venv/bin/python -m ortho.cli detect --input-dir "/path/to/inputs" \
+  --job "/path/to/area-a.json" --output-dir work/area-a/run-01
+.venv/bin/python -m ortho.cli validate-bundle work/area-a/run-01
+```
+
+### 이미 영역을 정의한 작업 JSON이 있다면
+
+`run.py`는 반복 실행용 편의 명령입니다. 영상과 JSON이 같은 입력 폴더에 있고 JSON 파일 이름과 `area.name`이 같을 때 사용할 수 있습니다. 작업 ID는 사용자가 정하는 이름이며 특정 분할 수·지역·배정 시스템을 전제하지 않습니다. 그렇지 않은 파일 구조는 위 CLI의 `--job` 경로를 직접 사용하세요.
+
+```sh
+python3 run.py run "/path/to/inputs" area-a
 ```
 
 이 명령이 `plan → detect → validate-bundle → 결과 ZIP`을 순서대로 실행합니다. 작업 JSON 설정을 그대로 사용하고, 원본을 변경하지 않습니다. 현재 setup은 nano만 준비하므로 다른 모델을 지정한 JSON은 해당 가중치를 별도로 준비하세요.
@@ -40,17 +59,17 @@ python3 run.py run "/Users/me/Downloads/crosswalk-test-12areas" V2-36914093-R1C1
 여러 작업은 같은 폴더 경로 뒤에 ID를 나열하면 순서대로 실행합니다:
 
 ```sh
-python3 run.py run "/Users/me/Downloads/crosswalk-test-12areas" V2-36914093-R1C1 V2-36914093-R1C2
+python3 run.py run "/path/to/inputs" area-a area-b
 ```
 
 탐지 없이 작업 범위·타일 수만 확인하려면 `run` 대신 `plan`을 사용합니다:
 
 ```sh
-python3 run.py plan "/Users/me/Downloads/crosswalk-test-12areas" V2-36914093-R1C1
+python3 run.py plan "/path/to/inputs" area-a
 ```
 
 - 결과: 저장소의 `work/assigned/<작업ID>/<실행시각-고유값>/`. 재실행은 새 폴더를 만듭니다.
-- 반환: 완료 시 터미널에 표시되는 `.zip`을 공유하고 배정표에 결과 링크를 적습니다. ZIP에는 후보·근거 묶음, 사용 JSON, 계획, 실행 명령 로그와 보고서가 들어갑니다. 입력 TIFF·모델·가상환경은 들어가지 않습니다.
+- 반환: 완료 시 터미널에 표시되는 `.zip`을 공유하고 결과를 지정된 전달 경로로 공유합니다. ZIP에는 후보·근거 묶음, 사용 JSON, 계획, 실행 명령 로그와 보고서가 들어갑니다. 입력 TIFF·모델·가상환경은 들어가지 않습니다.
 - 기록: `report.json`에 실제 Git 커밋, 미커밋 변경 여부, 실행 시간, 적용 모델 설정과 검증 결과를 저장합니다. `commands.log`에는 실행 명령과 출력·오류가 있습니다.
 - 실패: 해당 실행 폴더에 오류 보고서를 남기고 중단합니다. 실패한 작업을 완료로 표시하지 않으며 후속 ID도 실행하지 않습니다.
 - 검증 성공은 데이터 묶음의 무결성 확인입니다. 실제 횡단보도 확정이나 사람 검수를 뜻하지 않습니다. 박스가 그려진 검수 화면을 생성하는 명령도 아닙니다.
