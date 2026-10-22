@@ -153,7 +153,8 @@ def run(folder, ids, plan_only=False):
             report['elapsed_seconds'] = round(time.monotonic() - started, 2)
             (destination / 'report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
         if not plan_only:
-            archive = shutil.make_archive(str(destination), 'zip', root_dir=destination.parent, base_dir=destination.name)
+            archive_base = destination.parent / f'{name}__{stamp}'
+            archive = shutil.make_archive(str(archive_base), 'zip', root_dir=destination.parent, base_dir=destination.name)
             print(f'[{name}] 검증 완료. 반환 ZIP: {archive}', flush=True)
         else:
             print(f'[{name}] 계획만 확인했습니다. 탐지는 실행하지 않았습니다.', flush=True)
